@@ -1,0 +1,12 @@
+.piece {
+    background-image: url('chess-sprites.png');
+    background-repeat: no-repeat;
+    background-size: 600% 200%;
+}
+.black .king{
+    background-position: -30px -30px;
+}
+
+.white{
+
+}

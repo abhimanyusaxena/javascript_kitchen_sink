@@ -14,12 +14,155 @@
       #messages { list-style-type: none; margin: 0; padding: 0; }
       #messages > li { padding: 0.5rem 1rem; }
       #messages > li:nth-child(odd) { background: #efefef; }
+
+      #game-ct { 
+        width: 400px;
+        height: 400px;
+        margin: 20px auto;
+        border: 2px solid #333;
+        display: grid;
+        grid-template-columns: repeat(8, 1fr);
+      }
+      #game-ct > li {
+        list-style-type: none;
+        padding: 0;
+      }
+      #game-ct > li > ul {
+        height: 100%;
+        padding: 0;
+        margin: 0;
+        display: contents;
+      }
+      #game-ct li > ul > li {
+        width: 100%;
+        height: 50px;
+        list-style-type: none;
+      }
+      #game-ct li:nth-child(odd) li:nth-child(even),
+      #game-ct li:nth-child(even) li:nth-child(odd) {
+        background-color: #b58863;
+      }
+      #game-ct li:nth-child(even) li:nth-child(even),
+      #game-ct li:nth-child(odd) li:nth-child(odd) {
+        background-color: #f0d9b5;
+      }
     </style>
   </head>
   <body>
     <h2 style="text-align: center;">Java Script Playground</h2>
+    <ul id="game-ct">
+      <li data-row="A">
+        <ul>
+          <li data-col="1"></li>
+          <li data-col="2"></li>
+          <li data-col="3"></li>
+          <li data-col="4"></li>
+          <li data-col="5"></li>
+          <li data-col="6"></li>
+          <li data-col="7"></li>
+          <li data-col="8"></li>
+        </ul>
+      </li>
+      <li  data-row="B">
+        <ul>
+          <li data-col="1"></li>
+          <li data-col="2"></li>
+          <li data-col="3"></li>
+          <li data-col="4"></li>
+          <li data-col="5"></li>
+          <li data-col="6"></li>
+          <li data-col="7"></li>
+          <li data-col="8"></li>
+        </ul>
+      </li>
+      <li  data-row="C">
+        <ul>
+          <li data-col="1"></li>
+          <li data-col="2"></li>
+          <li data-col="3"></li>
+          <li data-col="4"></li>
+          <li data-col="5"></li>
+          <li data-col="6"></li>
+          <li data-col="7"></li>
+          <li data-col="8"></li>
+        </ul>
+      </li>
+      <li  data-row="D">
+        <ul>
+          <li data-col="1"></li>
+          <li data-col="2"></li>
+          <li data-col="3"></li>
+          <li data-col="4"></li>
+          <li data-col="5"></li>
+          <li data-col="6"></li>
+          <li data-col="7"></li>
+          <li data-col="8"></li>
+        </ul>
+      </li>
+      <li>
+        <ul>
+          <li data-col="1"></li>
+          <li data-col="2"></li>
+          <li data-col="3"></li>
+          <li data-col="4"></li>
+          <li data-col="5"></li>
+          <li data-col="6"></li>
+          <li data-col="7"></li>
+          <li data-col="8"></li>
+        </ul>
+      </li>
+      <li>
+        <ul>
+          <li data-col="1"></li>
+          <li data-col="2"></li>
+          <li data-col="3"></li>
+          <li data-col="4"></li>
+          <li data-col="5"></li>
+          <li data-col="6"></li>
+          <li data-col="7"></li>
+          <li data-col="8"></li>
+        </ul>
+      </li>
+      <li>
+        <ul>
+          <li data-col="1"></li>
+          <li data-col="2"></li>
+          <li data-col="3"></li>
+          <li data-col="4"></li>
+          <li data-col="5"></li>
+          <li data-col="6"></li>
+          <li data-col="7"></li>
+          <li data-col="8"></li>
+        </ul>
+      </li>
+      <li>
+        <ul>
+          <li data-col="1"></li>
+          <li data-col="2"></li>
+          <li data-col="3"></li>
+          <li data-col="4"></li>
+          <li data-col="5"></li>
+          <li data-col="6"></li>
+          <li data-col="7"></li>
+          <li data-col="8"></li>
+        </ul>
+      </li>
+    </ul>
   </body>
-  <script src="javascript/deep_cloning.js"></script>
-  <script src="javascript/shallow_cloning.js"></script>
-
+  <!-- <script src="javascript/deep_cloning.js"></script> -->
+  <!-- <script src="javascript/shallow_cloning.js"></script> -->
+  <!-- <script src="javascript/closure_example1.js"></script> -->
+  <!-- <script src="javascript/fib.js"></script> -->
+  <!-- <script src="javascript/curry.js"></script> -->
+  <!-- <script src="javascript/proto_bad.js"></script> -->
+  <!-- <script src="javascript/proto_basic.js"></script> -->
+  <!-- <script src="javascript/proto_bad_example.js"></script> -->
+  <!-- <script src="javascript/example1.js"></script> -->
+  <script src="javascript/piece.js"></script>
+  <script src="javascript/king.js"></script>
+  <script src="javascript/board.js"></script>
+  <script src="javascript/chess.js"></script>
+  <script> 
+    
+   </script>
 </html>
