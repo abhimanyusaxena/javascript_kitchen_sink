@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>Socket.IO chat</title>
+    <title>Chess Ultimate</title>
     <style>
       body { margin: 0; padding-bottom: 3rem; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
 
@@ -14,39 +14,8 @@
       #messages { list-style-type: none; margin: 0; padding: 0; }
       #messages > li { padding: 0.5rem 1rem; }
       #messages > li:nth-child(odd) { background: #efefef; }
-
-      #game-ct { 
-        width: 400px;
-        height: 400px;
-        margin: 20px auto;
-        border: 2px solid #333;
-        display: grid;
-        grid-template-columns: repeat(8, 1fr);
-      }
-      #game-ct > li {
-        list-style-type: none;
-        padding: 0;
-      }
-      #game-ct > li > ul {
-        height: 100%;
-        padding: 0;
-        margin: 0;
-        display: contents;
-      }
-      #game-ct li > ul > li {
-        width: 100%;
-        height: 50px;
-        list-style-type: none;
-      }
-      #game-ct li:nth-child(odd) li:nth-child(even),
-      #game-ct li:nth-child(even) li:nth-child(odd) {
-        background-color: #b58863;
-      }
-      #game-ct li:nth-child(even) li:nth-child(even),
-      #game-ct li:nth-child(odd) li:nth-child(odd) {
-        background-color: #f0d9b5;
-      }
     </style>
+    <link rel="stylesheet" href="css/chess.css">
   </head>
   <body>
     <h2 style="text-align: center;">Java Script Playground</h2>

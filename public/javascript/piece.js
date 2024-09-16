@@ -14,7 +14,7 @@ Piece.prototype.render = function(){
     var col = this.position[1];
     var element = document.querySelector(`[data-row="${row}"] [data-col="${col}"]`);
     if (element) {
-        element.textContent = this.color + " " + this.type;
+        element.classList.add('piece', this.color, this.type);
     } else {
         console.warn(`Element not found for position: ${this.position}`);
     }
