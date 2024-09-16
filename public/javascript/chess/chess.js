@@ -11,9 +11,4 @@
     });
 
     board.initiateGame();
-    var blackKing = new King({
-        color: 'black',
-        position: 'A4'
-    }).render();
-
 })()
