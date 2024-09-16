@@ -56,7 +56,7 @@
 }
 
 .black.queen {
-    background-position: -80px -50px;
+    background-position: -55px -50px;
 }
 
 .white.bishop {
@@ -64,7 +64,7 @@
 }
 
 .black.bishop {
-    background-position: -160px -50px;
+    background-position: -103px -50px;
 }
 
 .white.knight {
@@ -72,7 +72,7 @@
 }
 
 .black.knight {
-    background-position: -240px -50px;
+    background-position: -152px -50px;
 }
 
 .white.rook {
@@ -88,7 +88,7 @@
 }
 
 .black.pawn {
-    background-position: -400px -50px;
+    background-position: -247px -50px;
 }
 
 .piece {
