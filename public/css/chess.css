@@ -38,6 +38,7 @@
     background-size: 600% 200%;
 }
 
+
 .white.king {
     background-position: -30px 0;
 }
@@ -49,4 +50,50 @@
 .piece.king {
     background-size: 600% 200%;
 }
+
+.white.queen {
+    background-position: -80px 0;
+}
+
+.black.queen {
+    background-position: -80px -50px;
+}
+
+.white.bishop {
+    background-position: -160px 0;
+}
+
+.black.bishop {
+    background-position: -160px -50px;
+}
+
+.white.knight {
+    background-position: -240px 0;
+}
+
+.black.knight {
+    background-position: -240px -50px;
+}
+
+.white.rook {
+    background-position: -320px 0;
+}
+
+.black.rook {
+    background-position: -320px -50px;
+}
+
+.white.pawn {
+    background-position: -400px 0;
+}
+
+.black.pawn {
+    background-position: -400px -50px;
+}
+
+.piece {
+    width: 100%;
+    height: 100%;
+}
+
 
