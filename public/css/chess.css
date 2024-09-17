@@ -5,6 +5,7 @@
     border: 2px solid #333;
     display: grid;
     grid-template-columns: repeat(8, 1fr);
+    padding: 0;
   }
   #game-ct > li {
     list-style-type: none;
