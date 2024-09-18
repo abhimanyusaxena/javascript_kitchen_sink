@@ -1,5 +1,26 @@
 var Board = function(config){
-    this.root_id = config.root_id
+    this.root_id = config.root_id;
+    this.$el = document.getElementById(this.root_id);
+    this.addListeners();
+}
+
+Board.prototype.addListeners = function(){
+    this.$el.addEventListener('click', this.boardClicked.bind(this));
+}
+
+Board.prototype.boardClicked = function(event){
+    // Remove 'selected' class from all pieces
+    const allPieces = document.querySelectorAll('.piece');
+    allPieces.forEach(piece => {
+        piece.classList.remove('selected');
+    });
+    console.log('>>>>>>>>>>board clicked')
+
+    //Add 'selected' class to the clicked piece
+    const clickedBlock = event.target;
+    if (clickedBlock) {
+        clickedBlock.classList.add('selected');
+    }
 }
 
 Board.prototype.initiateGame = function() {
@@ -50,9 +71,6 @@ Board.prototype.initiateGame = function() {
     for (let i = 0; i < 8; i++) {
         this.blackPieces.pawns.push(new Pawn({ color: 'black', position: String.fromCharCode(65 + i) + '7' }));
     }
-
-    // Render all pieces
-    this.renderAllPieces();
 };
 
 Board.prototype.renderAllPieces = function() {
