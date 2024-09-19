@@ -5,8 +5,8 @@ var Piece = function(config){
         this.render();        
     }    
 }
-Piece.prototype.move = function(targetPosition){
-    console.log("Method not implemeted by: " + typeof(this));
+Piece.prototype.moveTo = function(targetPosition){
+    console.log("Method not implemeted by: " + this.type);
 }
 
 

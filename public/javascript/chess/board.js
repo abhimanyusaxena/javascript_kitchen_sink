@@ -65,7 +65,10 @@ Board.prototype.boardClicked = function(event){
         //Add 'selected' class to the clicked piece    
         this.selectPiece(event.target, selectedPiece);
     }else{
-        
+        //update position of the selected piece to new position
+        if(this.selectedPiece){
+            this.selectedPiece.moveTo(clickedCell);        
+        }                
     }    
 }
 
@@ -88,7 +91,7 @@ Board.prototype.getPieceAt = function(cell){
         } else {
             // For single pieces (king, queen)
             if (this.whitePieces[pieceType].position === position) {
-                return piece;
+                return this.whitePieces[pieceType];
             }
         }
     }
@@ -105,7 +108,7 @@ Board.prototype.getPieceAt = function(cell){
         } else {
             // For single pieces (king, queen)
             if (this.blackPieces[pieceType].position === position) {
-                return piece;
+                return this.blackPieces[pieceType];
             }
         }
     }
@@ -124,7 +127,7 @@ Board.prototype.selectPiece = function(clickedElement, selectedPiece) {
         }
     }
     selectedPiece.selected = true;
-    this.selectedPiece = selectPiece;
+    this.selectedPiece = selectedPiece;
 }
 
 Board.prototype.initiateGame = function() {
