@@ -15,9 +15,10 @@ Piece.prototype.attachListeners = function(){
 }
 
 Piece.prototype.render = function(){
-    var row = this.position[0];
-    var col = this.position[1];
-    var element = document.querySelector(`[data-row="${row}"] [data-col="${col}"]`);
+    var col = this.position[0];
+    var row = this.position[1];
+    // Find the li element with matching data-col and data-row attributes
+    var element = document.querySelector(`[data-col="${col}"] [data-row="${row}"]`);
     if (element) {        
         // Create a new div element to represent the piece
         var pieceElement = document.createElement('div');

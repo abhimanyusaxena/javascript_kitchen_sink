@@ -6,7 +6,7 @@ var Board = function(config){
 }
 
 Board.prototype.addListeners = function(){
-    //this.$el.addEventListener('click', this.boardClicked.bind(this));
+    this.$el.addEventListener('click', this.boardClicked.bind(this));
 }
 
 Board.prototype.generateBoardDom = function(config){
@@ -23,7 +23,7 @@ Board.prototype.generateBoardDom = function(config){
     
     boardHTML += '</ul>';
     
-    this.$el.innerHTML = boardHTML;
+    this.$el.innerHTML = boardHTML;    
 }
 
 Board.prototype.boardClicked = function(event){
