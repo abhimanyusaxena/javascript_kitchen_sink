@@ -26,42 +26,105 @@ Board.prototype.generateBoardDom = function(config){
     this.$el.innerHTML = boardHTML;    
 }
 
-Board.prototype.boardClicked = function(event){
+Board.prototype.getClickedBlock = function(clickEvent){
+    // Get the clicked block
+    const clickedCell = clickEvent.target.closest('li');
+        
+    if (clickedCell) {
+        // Extract row and column from data attributes
+        const row = clickedCell.getAttribute('data-row');
+        const parentLi = clickedCell.closest('li[data-col]');
+        const col = parentLi ? parentLi.getAttribute('data-col') : null;
+        
+        if (row !== null && col !== null) {
+            return {
+                row: row,
+                col: col
+            };
+        } else {
+            console.warn('Unable to determine block coordinates');
+        }
+    } else {
+        console.warn('Clicked element is not within a board square');
+    }
+}
+
+Board.prototype.clearSelection = function(){
     // Remove 'selected' class from all pieces
     const allPieces = document.querySelectorAll('.piece');
     allPieces.forEach(piece => {
         piece.classList.remove('selected');
     });
+};
 
-    // Get the clicked block
-    const clickedCell = event.target.closest('li');
-    
-    if (clickedCell) {
-        // Extract row and column from data attributes
-        const row = clickedCell.getAttribute('data-row');
-        const col = clickedCell.getAttribute('data-col');
+Board.prototype.boardClicked = function(event){    
+    this.clearSelection();    
+    const clickedCell = this.getClickedBlock(event);
+    const selectedPiece = this.getPieceAt(clickedCell)
+    if(selectedPiece){
+        //Add 'selected' class to the clicked piece    
+        this.selectPiece(event.target, selectedPiece);
+    }else{
         
-        if (row !== null && col !== null) {
-            console.log(`Clicked block coordinates: row ${row}, column ${col}`);
-        } else {
-            console.log('Unable to determine block coordinates');
-        }
-    } else {
-        console.log('Clicked element is not within a board square');
+    }    
+}
+
+Board.prototype.getPieceAt = function(cell){
+    if (!cell || !cell.row || !cell.col) {
+        return false;
     }
 
-    //Add 'selected' class to the clicked piece
-    const clickedBlock = event.target;
-    if (clickedBlock.classList.contains('piece')) {
+    const position = cell.col + cell.row;
+
+    // Check white pieces
+    for (let pieceType in this.whitePieces) {
+        if (Array.isArray(this.whitePieces[pieceType])) {
+            // For arrays (pawns, bishops, knights, rooks)
+            for (let piece of this.whitePieces[pieceType]) {
+                if (piece.position === position) {
+                    return piece;
+                }
+            }
+        } else {
+            // For single pieces (king, queen)
+            if (this.whitePieces[pieceType].position === position) {
+                return piece;
+            }
+        }
+    }
+
+    // Check black pieces
+    for (let pieceType in this.blackPieces) {
+        if (Array.isArray(this.blackPieces[pieceType])) {
+            // For arrays (pawns, bishops, knights, rooks)
+            for (let piece of this.blackPieces[pieceType]) {
+                if (piece.position === position) {
+                    return piece;
+                }
+            }
+        } else {
+            // For single pieces (king, queen)
+            if (this.blackPieces[pieceType].position === position) {
+                return piece;
+            }
+        }
+    }
+    return false;
+}
+
+Board.prototype.selectPiece = function(clickedElement, selectedPiece) {
+    if (clickedElement.classList.contains('piece')) {
         // If the clicked element is a piece, add the 'selected' class
-        clickedBlock.classList.add('selected');
+        clickedElement.classList.add('selected');
     } else {
         // If the clicked element is not a piece, check its parent
-        const parentElement = clickedBlock.closest('.piece');
+        const parentElement = clickedElement.closest('.piece');
         if (parentElement) {
             parentElement.classList.add('selected');
         }
     }
+    selectedPiece.selected = true;
+    this.selectedPiece = selectPiece;
 }
 
 Board.prototype.initiateGame = function() {
