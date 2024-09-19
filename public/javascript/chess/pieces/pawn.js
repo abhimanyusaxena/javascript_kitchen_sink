@@ -7,5 +7,5 @@ var Pawn = function(config){
 
 Pawn.prototype = new Piece({});
 Pawn.prototype.move = function(newPosition){
-
+    console.log('pawn to move')
 }

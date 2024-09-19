@@ -1,6 +1,6 @@
 (function(){
     var board = new Board({
-        root_id: "game-ct"
+        root_id: "chessboard-ct"
     });
     board.initiateGame();
 })()

@@ -1,11 +1,29 @@
 var Board = function(config){
     this.root_id = config.root_id;
     this.$el = document.getElementById(this.root_id);
+    this.generateBoardDom();
     this.addListeners();
 }
 
 Board.prototype.addListeners = function(){
-    this.$el.addEventListener('click', this.boardClicked.bind(this));
+    //this.$el.addEventListener('click', this.boardClicked.bind(this));
+}
+
+Board.prototype.generateBoardDom = function(config){
+    let boardHTML = '<ul id="game-ct">';
+    const columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+    
+    for (let col of columns) {
+        boardHTML += `<li data-col="${col}"><ul>`;
+        for (let row = 1; row <= 8; row++) {
+            boardHTML += `<li data-row="${row}"></li>`;
+        }
+        boardHTML += '</ul></li>';
+    }
+    
+    boardHTML += '</ul>';
+    
+    this.$el.innerHTML = boardHTML;
 }
 
 Board.prototype.boardClicked = function(event){
@@ -14,12 +32,35 @@ Board.prototype.boardClicked = function(event){
     allPieces.forEach(piece => {
         piece.classList.remove('selected');
     });
-    console.log('>>>>>>>>>>board clicked')
+
+    // Get the clicked block
+    const clickedCell = event.target.closest('li');
+    
+    if (clickedCell) {
+        // Extract row and column from data attributes
+        const row = clickedCell.getAttribute('data-row');
+        const col = clickedCell.getAttribute('data-col');
+        
+        if (row !== null && col !== null) {
+            console.log(`Clicked block coordinates: row ${row}, column ${col}`);
+        } else {
+            console.log('Unable to determine block coordinates');
+        }
+    } else {
+        console.log('Clicked element is not within a board square');
+    }
 
     //Add 'selected' class to the clicked piece
     const clickedBlock = event.target;
-    if (clickedBlock) {
+    if (clickedBlock.classList.contains('piece')) {
+        // If the clicked element is a piece, add the 'selected' class
         clickedBlock.classList.add('selected');
+    } else {
+        // If the clicked element is not a piece, check its parent
+        const parentElement = clickedBlock.closest('.piece');
+        if (parentElement) {
+            parentElement.classList.add('selected');
+        }
     }
 }
 
