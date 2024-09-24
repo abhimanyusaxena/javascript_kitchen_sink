@@ -1,6 +1,8 @@
 var Piece = function(config){
     this.position = config.position;
     this.color = config.color;
+    this.board = config.board;
+    this.currentTurn = config.currentTurn;
     if(this.position){
         this.render();        
     }    
@@ -42,6 +44,31 @@ Piece.prototype.render = function(){
     }
 }
 
-Piece.prototype.kill = function(targetPiece){
-    console.log("Method not implemeted by: " + typeof(this));
-}
+Piece.prototype.kill = function(targetPiece) {
+    if (targetPiece) {
+        const targetPosition = targetPiece.position;
+        const targetElement = document.querySelector(`[data-col="${targetPosition[0]}"] [data-row="${targetPosition[1]}"]`);
+        targetElement.innerHTML = ''; // Remove the target piece from the board
+        
+        // Remove the target piece from the appropriate pieces object
+        if (targetPiece.color === 'white') {
+            for (let pieceType in this.board.whitePieces) {
+                const pieceArray = Array.isArray(this.board.whitePieces[pieceType]) ? this.board.whitePieces[pieceType] : [this.board.whitePieces[pieceType]];
+                const index = pieceArray.indexOf(targetPiece);
+                if (index !== -1) {
+                    pieceArray.splice(index, 1);
+                    break;
+                }
+            }
+        } else {
+            for (let pieceType in this.board.blackPieces) {
+                const pieceArray = Array.isArray(this.board.blackPieces[pieceType]) ? this.board.blackPieces[pieceType] : [this.board.blackPieces[pieceType]];
+                const index = pieceArray.indexOf(targetPiece);
+                if (index !== -1) {
+                    pieceArray.splice(index, 1);
+                    break;
+                }
+            }
+        }
+    }
+};
