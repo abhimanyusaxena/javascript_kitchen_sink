@@ -6,6 +6,16 @@ var King = function(config){
 
 
 King.prototype = new Piece({});
-King.prototype.move = function(newPosition){
+
+King.prototype.isValidMove = function(targetPosition){
+    
+}
+King.prototype.moveTo = function(targetPosition){
+    if(this.isValidMove(targetPosition)){
+        this.position = targetPosition.col + targetPosition.row;
+        this.render();
+    }else{
+        console.log("Invalid move for king");
+    }
 
 }

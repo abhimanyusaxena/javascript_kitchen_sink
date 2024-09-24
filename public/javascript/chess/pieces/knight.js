@@ -5,12 +5,18 @@ var Knight = function(config){
 
 Knight.prototype = new Piece({});
 
-Knight.prototype.moveTo = function(targetPosition){
+Knight.prototype.moveTo = function(targetPosition) {
     var isValidMove = this.isValidMove(targetPosition);
     if (!isValidMove) {
         console.log("Invalid move for knight");
         return;
     }
+    
+    const targetPiece = this.board.getPieceAt(targetPosition);
+    if (targetPiece) {
+        this.kill(targetPiece);
+    }
+
     console.log("move function starts here");
     var newPos = targetPosition.col + targetPosition.row;
     this.position = newPos;
@@ -23,7 +29,6 @@ Knight.prototype.isValidMove = function(targetPosition) {
     var targetRow = parseInt(targetPosition.row, 10);
     var currentCol = this.position[0].toUpperCase().charCodeAt(0) - 65; 
     var targetCol = targetPosition.col.toUpperCase().charCodeAt(0) - 65;
-
     console.log("currentRow: ", currentRow + " " + typeof currentRow);
     console.log("targetRow: ", targetRow + " " + typeof targetRow);
     console.log("currentCol: ", currentCol + " " + typeof currentCol);
