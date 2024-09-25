@@ -3,13 +3,13 @@ var Queen = function(config) {
     this.constructor(config);
 };
 
-// Inherit from Piece
 Queen.prototype = new Piece({});
 
-Queen.prototype.isValidPosition = function(targetPosition) {
-    // Convert current position to row and column
+Queen.prototype.isValidPosition = function(targetPosition, board) {
+    
     let currentCol = this.position.charAt(0); 
     let currentRow = parseInt(this.position.charAt(1)); 
+
     
     let targetCol = targetPosition.col; 
     let targetRow = parseInt(targetPosition.row); 
@@ -20,17 +20,53 @@ Queen.prototype.isValidPosition = function(targetPosition) {
 
     // Check if the move is horizontal, vertical, or diagonal
     if (colDiff === rowDiff || currentCol === targetCol || currentRow === targetRow) {
-        
-        return true;
+        // Before validating the move, check if the path is clear
+        if (this.isPathClear(currentCol, currentRow, targetCol, targetRow, board)) {
+            return true; // Valid move if path is clear
+        } else {
+            console.warn("Move blocked by another piece");
+            return false; // Path is not clear
+        }
     }
 
-    
+    // Invalid Queen move
     console.warn("Invalid move for queen");
     return false;
 };
 
-Queen.prototype.moveTo = function(targetPosition) {
-    if (this.isValidPosition(targetPosition)) {
+// Helper function to check if path is clear
+Queen.prototype.isPathClear = function(currentCol, currentRow, targetCol, targetRow, board) {
+    let colIncrement = 0, rowIncrement = 0;
+
+    // Calculate column and row increments based on the direction of movement
+    if (currentCol !== targetCol) {
+        colIncrement = currentCol < targetCol ? 1 : -1; // Move left or right
+    }
+    if (currentRow !== targetRow) {
+        rowIncrement = currentRow < targetRow ? 1 : -1; // Move up or down
+    }
+
+    let col = currentCol.charCodeAt(0) + colIncrement;
+    let row = currentRow + rowIncrement;
+
+    // Traverse from current position to target position, checking for pieces
+    while (col !== targetCol.charCodeAt(0) || row !== targetRow) {
+        let square = String.fromCharCode(col) + row;
+
+        if (board[square] !== null) { // If there's a piece in the way
+            return false;
+        }
+
+        // Move along the path
+        col += colIncrement;
+        row += rowIncrement;
+    }
+
+    return true; // Path is clear
+};
+
+Queen.prototype.moveTo = function(targetPosition, board) {
+    if (this.isValidPosition(targetPosition, board)) {
         // Move queen to the new position
         this.position = targetPosition.col + targetPosition.row;
         this.render();
