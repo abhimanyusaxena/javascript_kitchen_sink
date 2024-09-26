@@ -1,6 +1,7 @@
 var Piece = function(config){
     this.position = config.position;
     this.color = config.color;
+    this.board = config.board;
     if(this.position){
         this.render();        
     }    
