@@ -48,9 +48,7 @@ King.prototype.moveTo = function (targetPosition) {
         this.isValidMove(targetPosition) &&
         this.board.getPieceAt(targetPosition) !== null &&
         this.board.getPieceAt(targetPosition).color !== this.color
-    ) {
-        this.kill(this.board.getPieceAt(targetPosition));
-    }
+    ) 
     if (this.isValidMove(targetPosition)) {
         this.position = targetPosition.col + targetPosition.row;
         this.render();

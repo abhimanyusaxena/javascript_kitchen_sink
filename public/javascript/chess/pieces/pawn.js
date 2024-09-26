@@ -96,4 +96,3 @@ Pawn.prototype.isDiagonalCapture = function(targetPosition) {
 
 // Inherit from the Piece class properly
 Pawn.prototype.constructor = Pawn;
-
