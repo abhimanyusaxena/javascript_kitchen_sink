@@ -60,24 +60,43 @@ Board.prototype.boardClicked = function(event) {
     if (!clickedCell) return; // Exit if click was not on a valid cell
 
     const piece = this.getPieceAt(clickedCell);
-    
+
     if (this.selectedPiece) { // If a piece is already selected
         if (piece) {
-            // If the selected piece is of the same color
+            // If the player clicks on a piece of the same color, allow reselection
             if (piece.color === this.selectedPiece.color) {
-                console.log(`You selected your own piece. You can't select an opponent's piece.`);
+                console.log(`Reselecting your own piece.`);
+                this.selectPiece(event.target, piece); // Reselect the new piece
                 return; 
             } else {
-                // Move selected piece to the clicked cell if it's a valid move
+                // If clicked on an opponent's piece, validate move before capturing
+                const targetPosition = { row: clickedCell.row, col: clickedCell.col };
+                const isValidMove = this.selectedPiece.isValidMove(targetPosition);
+
+                if (!isValidMove) {
+                    console.log('Invalid move, try again.');
+                    return; // Do not switch turns or move the piece if invalid move
+                }
+
+                // Valid move, so capture the opponent's piece
                 this.selectedPiece.moveTo(clickedCell);
                 this.clearSelection();
-                this.switchTurn();
+                this.switchTurn(); // Switch turn after a valid move
             }
         } else {
-            // Move the selected piece to the new position if no piece is clicked
+            // Empty cell clicked, validate move and proceed
+            const targetPosition = { row: clickedCell.row, col: clickedCell.col };
+            const isValidMove = this.selectedPiece.isValidMove(targetPosition);
+
+            if (!isValidMove) {
+                console.log('Invalid move, try again.');
+                return; // Do not switch turns or move the piece if invalid move
+            }
+
+            // Move the selected piece to the new position
             this.selectedPiece.moveTo(clickedCell);
             this.clearSelection();
-            this.switchTurn();
+            this.switchTurn(); // Switch turn after a valid move
         }
     } else {
         if (piece) {
@@ -90,6 +109,8 @@ Board.prototype.boardClicked = function(event) {
         }
     }
 }
+
+
 
 Board.prototype.getPieceAt = function(cell) {
     if (!cell || !cell.row || !cell.col) {
