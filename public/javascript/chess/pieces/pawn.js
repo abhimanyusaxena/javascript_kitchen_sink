@@ -1,48 +1,67 @@
-var Pawn = function(config){
+var Pawn = function(config, board) {
     this.type = 'pawn';
+    this.board = board; // Store a reference to the board
     this.constructor(config);
 };
 
-
-
 Pawn.prototype = new Piece({});
 
-Pawn.prototype.isValidPosition = function(targetPosition){
-    // Convert current position to row and column
+Pawn.prototype.isValidMove = function(targetPosition) {
     let currentCol = this.position.charAt(0);
     let currentRow = parseInt(this.position.charAt(1));
 
-    // Calculate the allowed move distance based on pawn color
     let moveDistance = this.color === 'white' ? 1 : -1;
     let initialRow = this.color === 'white' ? 2 : 7;
 
-    // Check if the move is valid
+    // Check for a piece directly in front of the pawn
+    let pieceInFront = this.board.getPieceAt({
+        col: currentCol,
+        row: (currentRow + moveDistance).toString()
+    });
+
     if (targetPosition.col === currentCol) {
-        // Moving straight
-        if (targetPosition.row === (currentRow + moveDistance).toString()) {
-            // Regular one-square move
-            return true;
-        } else if (currentRow === initialRow && targetPosition.row === (currentRow + 2 * moveDistance).toString()) {
-            // Initial two-square move
-            return true;
+        // Regular move
+        if (!pieceInFront && targetPosition.row === (currentRow + moveDistance).toString()) {
+            return true; // Move forward one space
+        } else if (currentRow === initialRow && !pieceInFront && targetPosition.row === (currentRow + 2 * moveDistance).toString()) {
+            return true; // Move two spaces on the first move
         }
     } else if (Math.abs(targetPosition.col.charCodeAt(0) - currentCol.charCodeAt(0)) === 1 &&
                targetPosition.row === (currentRow + moveDistance).toString()) {
-        // Diagonal capture (assuming there's an enemy piece, which should be checked in the main game logic)
-        return true;
+        // Diagonal capture
+        let pieceToCapture = this.board.getPieceAt(targetPosition);
+        if (pieceToCapture && pieceToCapture.color !== this.color) {
+            return 'capture'; // Valid capture move
+        }
     }
 
-    // If none of the above conditions are met, the move is invalid
     console.warn("Invalid move for pawn");
     return false;
-}
+};
 
-Pawn.prototype.moveTo = function(targetPosition){    
-    if(this.isValidPosition(targetPosition)){
+Pawn.prototype.moveTo = function(targetPosition) {
+    const result = this.isValidMove(targetPosition);
+    if (result === true) {
+        // Move the pawn to the new position
         this.position = targetPosition.col + targetPosition.row;
         this.render();
-    }else{
-        //NOOP
+        return true;
+    } else if (result === 'capture') {
+        // Capture the piece and move
+        let pieceToCapture = this.board.getPieceAt(targetPosition);
+        if (pieceToCapture) {
+            pieceToCapture.kill();
+        }
+        this.position = targetPosition.col + targetPosition.row;
+        this.render();
+        return true;
     }
-    
-}
+    return false; // Invalid move
+};
+
+Pawn.prototype.kill = function() {
+    if (this.$el && this.$el.parentNode) {
+        this.$el.parentNode.removeChild(this.$el);
+    }
+    this.position = null;
+};
