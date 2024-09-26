@@ -27,7 +27,7 @@ Board.prototype.generateBoardDom = function(config){
 }
 
 Board.prototype.getClickedBlock = function(clickEvent){
-    // Get the clicked block
+
     const clickedCell = clickEvent.target.closest('li');
         
     if (clickedCell) {
