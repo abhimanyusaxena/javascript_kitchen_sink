@@ -3,6 +3,8 @@ var Board = function(config){
     this.$el = document.getElementById(this.root_id);
     this.generateBoardDom();
     this.addListeners();
+    this.currentTurn = 'white';
+    this.selectedPiece = null;
 }
 
 Board.prototype.addListeners = function(){
@@ -60,17 +62,32 @@ Board.prototype.clearSelection = function(){
 Board.prototype.boardClicked = function(event){
     this.clearSelection();
     const clickedCell = this.getClickedBlock(event);
-    const selectedPiece = this.getPieceAt(clickedCell)
-    if(selectedPiece){
-        //Add 'selected' class to the clicked piece
-        this.selectPiece(event.target, selectedPiece);
-    }else{
-        //update position of the selected piece to new position
-        if(this.selectedPiece){
+
+    if (!clickedCell) return;//stop if null 
+
+    const selectedPiece = this.getPieceAt(clickedCell);
+
+    if (selectedPiece) {
+        // Ensure the selected piece belongs to the current player
+        if (selectedPiece.color === this.currentTurn) {
+            this.selectPiece(event.target, selectedPiece);
+        } else {
+            console.warn("It's " + this.currentTurn + "'s turn.");
+        }
+    } else {
+        // If a piece is selected and the cell is empty, move the piece
+        if (this.selectedPiece) {
             this.selectedPiece.moveTo(clickedCell);
+            this.toggleTurn();  // Switch turn after a valid move
         }
     }
 }
+
+Board.prototype.toggleTurn = function() {
+    this.currentTurn = this.currentTurn === 'white' ? 'black' : 'white';
+    console.log("It's now " + this.currentTurn + "'s turn.");
+}
+
 
 Board.prototype.getPieceAt = function(cell){
     if (!cell || !cell.row || !cell.col) {
