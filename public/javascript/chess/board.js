@@ -12,7 +12,7 @@ Board.prototype.addListeners = function(){
 Board.prototype.generateBoardDom = function(config){
     let boardHTML = '<ul id="game-ct">';
     const columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
-    
+
     for (let col of columns) {
         boardHTML += `<li data-col="${col}"><ul>`;
         for (let row = 1; row <= 8; row++) {
@@ -20,22 +20,22 @@ Board.prototype.generateBoardDom = function(config){
         }
         boardHTML += '</ul></li>';
     }
-    
+
     boardHTML += '</ul>';
-    
-    this.$el.innerHTML = boardHTML;    
+
+    this.$el.innerHTML = boardHTML;
 }
 
 Board.prototype.getClickedBlock = function(clickEvent){
     // Get the clicked block
     const clickedCell = clickEvent.target.closest('li');
-        
+
     if (clickedCell) {
         // Extract row and column from data attributes
         const row = clickedCell.getAttribute('data-row');
         const parentLi = clickedCell.closest('li[data-col]');
         const col = parentLi ? parentLi.getAttribute('data-col') : null;
-        
+
         if (row !== null && col !== null) {
             return {
                 row: row,
@@ -57,19 +57,19 @@ Board.prototype.clearSelection = function(){
     });
 };
 
-Board.prototype.boardClicked = function(event){    
-    this.clearSelection();    
+Board.prototype.boardClicked = function(event){
+    this.clearSelection();
     const clickedCell = this.getClickedBlock(event);
     const selectedPiece = this.getPieceAt(clickedCell)
     if(selectedPiece){
-        //Add 'selected' class to the clicked piece    
+        //Add 'selected' class to the clicked piece
         this.selectPiece(event.target, selectedPiece);
     }else{
         //update position of the selected piece to new position
         if(this.selectedPiece){
-            this.selectedPiece.moveTo(clickedCell);        
-        }                
-    }    
+            this.selectedPiece.moveTo(clickedCell);
+        }
+    }
 }
 
 Board.prototype.getPieceAt = function(cell){
