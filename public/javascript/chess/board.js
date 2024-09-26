@@ -11,7 +11,7 @@ Board.prototype.addListeners = function(){
 
 Board.prototype.generateBoardDom = function(config){
     let boardHTML = '<ul id="game-ct">';
-    const columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+    const columns = ['H', 'G', 'F', 'E', 'D', 'C', 'B', 'A'];
     
     for (let col of columns) {
         boardHTML += `<li data-col="${col}"><ul>`;
