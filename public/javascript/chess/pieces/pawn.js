@@ -34,7 +34,17 @@ Pawn.prototype.isValidPosition = function(targetPosition){
 
     // If none of the above conditions are met, the move is invalid
     console.warn("Invalid move for pawn");
-    return false;
+    return false;var Rook = function(config){
+        this.type = 'rook';
+        this.constructor(config);
+    };
+    
+    
+    
+    Rook.prototype = new Piece({});
+    Rook.prototype.move = function(newPosition){
+    
+    }
 }
 
 Pawn.prototype.moveTo = function(targetPosition){    
