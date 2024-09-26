@@ -30,5 +30,5 @@ app.get('/get_new_message', (req, res) => {
 });
 
 server.listen(3003, () => {
-  console.log('server running at http://localhost:3001');
+  console.log('server running at http://localhost:3003');
 });

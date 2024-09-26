@@ -30,6 +30,7 @@ King.prototype.moveTo = function(targetPosition){
     if (this.isValidPosition(targetPosition)) {
         this.position = targetPosition.col + targetPosition.row;
         this.render();
+        return true;
     } else {
         //NOOP
     }

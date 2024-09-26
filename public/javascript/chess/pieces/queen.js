@@ -1,79 +1,38 @@
 var Queen = function(config) {
     this.type = 'queen';
-    Piece.call(this, config);
+    this.constructor(config);
 };
 
-Queen.prototype = Object.create(Piece.prototype);
-Queen.prototype.constructor = Queen;
+Queen.prototype = new Piece({});
 
-Queen.prototype.moveTo = function(targetPosition) {
-    if (!this.isValidMove(targetPosition)) {
-        console.log("Invalid move for the queen");
-        return;
+Queen.prototype.isValidPosition = function(targetPosition) {
+    // Convert current position to row and column
+    let currentCol = this.position.charAt(0);
+    let currentRow = parseInt(this.position.charAt(1));
+
+    // Convert target position to row and column
+    let targetCol = targetPosition.col;
+    let targetRow = parseInt(targetPosition.row);
+
+    // Calculate column and row differences
+    let colDiff = Math.abs(targetCol.charCodeAt(0) - currentCol.charCodeAt(0));
+    let rowDiff = Math.abs(targetRow - currentRow);
+
+    // Check if the move is valid (same row, same column, or same diagonal)
+    if (currentCol === targetCol || currentRow === targetRow || colDiff === rowDiff) {
+        return true;
     }
 
-    const targetPiece = this.board.getPieceAt(targetPosition);
-    if (targetPiece) {
-        this.kill(targetPiece);
-    }
-
-    this.position = targetPosition.col + targetPosition.row;
-    this.render();
-    console.log(`Queen moved to ${targetPosition.col}${targetPosition.row}`);
+    console.warn("Invalid move for queen");
+    return false;
 };
 
-Queen.prototype.isValidMove = function(targetPosition) {
-    var currentCol = this.position[0].toUpperCase().charCodeAt(0);
-    var currentRow = parseInt(this.position[1], 10);
-    var targetCol = targetPosition.col.toUpperCase().charCodeAt(0);
-    var targetRow = parseInt(targetPosition.row, 10);
-
-    var colDiff = Math.abs(currentCol - targetCol);
-    var rowDiff = Math.abs(currentRow - targetRow);
-
-    if (colDiff === rowDiff || currentCol === targetCol || currentRow === targetRow) {
-        if (!this.isPathClear(targetPosition)) {
-            console.log("Path is blocked");
-            return false;
-        }
+Queen.prototype.moveTo = function(targetPosition) {    
+    if (this.isValidPosition(targetPosition)) {
+        this.position = targetPosition.col + targetPosition.row;
+        this.render();
         return true;
     } else {
-        console.log("Invalid Queen move");
-        return false;
+
     }
-};
-
-Queen.prototype.isPathClear = function(targetPosition) {
-    var currentCol = this.position[0].toUpperCase().charCodeAt(0);
-    var currentRow = parseInt(this.position[1], 10);
-    var targetCol = targetPosition.col.toUpperCase().charCodeAt(0);
-    var targetRow = parseInt(targetPosition.row, 10);
-
-    var colStep = targetCol > currentCol ? 1 : (targetCol < currentCol ? -1 : 0);
-    var rowStep = targetRow > currentRow ? 1 : (targetRow < currentRow ? -1 : 0);
-
-    var nextCol = currentCol + colStep;
-    var nextRow = currentRow + rowStep;
-
-    while (nextCol !== targetCol || nextRow !== targetRow) {
-        var positionToCheck = String.fromCharCode(nextCol) + nextRow;
-        if (this.board.getPieceAt({ col: String.fromCharCode(nextCol), row: nextRow })) {
-            return false;
-        }
-        nextCol += colStep;
-        nextRow += rowStep;
-    }
-
-    return true;
-};
-
-Queen.prototype.kill = function(targetPiece) {
-    if (!targetPiece) {
-        console.error("No target piece found for capture");
-        return;
-    }
-
-    console.log(`${this.type} is capturing ${targetPiece.type} at ${targetPiece.position}`);
-    this.board.removePiece(targetPiece);
-    console.log(`${targetPiece.type} has been captured and removed from the board`);
 };
