@@ -8,6 +8,11 @@
     padding: 0;
 }
 
+.piece {
+    transition: transform 0.5s ease-in-out;
+}
+
+
 #game-ct > li {
     list-style-type: none;
     padding: 0;
