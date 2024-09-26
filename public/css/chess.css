@@ -1,106 +1,63 @@
 #game-ct { 
-    width: 400px;
-    height: 400px;
+    width: 400px;  /* Retaining the board size */
+    height: 400px; /* Retaining the board size */
     margin: 20px auto;
     border: 2px solid #333;
     display: grid;
     grid-template-columns: repeat(8, 1fr);
     padding: 0;
-  }
-  #game-ct > li {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Add a slight shadow to the board */
+}
+
+#game-ct > li {
     list-style-type: none;
     padding: 0;
-  }
-  #game-ct > li > ul {
+}
+
+#game-ct > li > ul {
     height: 100%;
     padding: 0;
     margin: 0;
     display: contents;
-  }
-  #game-ct li > ul > li {
+}
+
+#game-ct li > ul > li {
     width: 100%;
-    height: 50px;
+    height: 50px;  /* Keeping the square size at 50px */
     list-style-type: none;
-  }
-  #game-ct li:nth-child(odd) li:nth-child(even),
-  #game-ct li:nth-child(even) li:nth-child(odd) {
-    background-color: #b58863;
-  }
-  #game-ct li:nth-child(even) li:nth-child(even),
-  #game-ct li:nth-child(odd) li:nth-child(odd) {
-    background-color: #f0d9b5;
-  }
+}
 
+/* Checkerboard pattern */
+#game-ct li:nth-child(odd) li:nth-child(even),
+#game-ct li:nth-child(even) li:nth-child(odd) {
+    background-color: #769656; /* Green color for dark squares */
+}
 
+#game-ct li:nth-child(even) li:nth-child(even),
+#game-ct li:nth-child(odd) li:nth-child(odd) {
+    background-color: #eeeed2; /* Light beige color for light squares */
+}
 
+/* Piece styling */
 .piece {
-    background-image: url('/images/chess_sprite_transparent.png');
+    background-image: url('../images/chess_sprite_transparent.png'); /* Custom chess piece image */
     background-repeat: no-repeat;
-    background-size: 600% 200%;
-}
-
-
-.white.king {
-    background-position: -9px 0;
-}
-
-.black.king {
-    background-position: -9px -50px;
-}
-
-
-.white.queen {
-    background-position: -55px 0;
-}
-
-.black.queen {
-    background-position: -55px -50px;
-}
-
-.white.bishop {
-    background-position: -103px 0;
-}
-
-.black.bishop {
-    background-position: -103px -50px;
-}
-
-.white.knight {
-    background-position: -152px 0;
-}
-
-.black.knight {
-    background-position: -152px -50px;
-}
-
-.white.rook {
-    background-position: -198px 0;
-}
-
-.black.rook {
-    background-position: -198px -50px;
-}
-
-.white.pawn {
-    background-position: -247px 0;
-}
-
-.black.pawn {
-    background-position: -247px -50px;
-}
-
-.piece {
+    background-size: 600% 200%;  /* Adjusting sprite positions */
     width: 100%;
     height: 100%;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Add shadow for a more 3D feel */
 }
 
+/* Highlight the selected piece with a green shadow */
 .piece.selected {
-    box-shadow: 0 0 10px 3px rgba(0, 255, 0, 0.7);
-    transform: scale(1.1);
+    box-shadow: 0 0 10px 3px rgba(0, 255, 0, 0.7); /* Green glow for selection */
+    transform: scale(1.1);  /* Slightly larger size for selected piece */
     transition: all 0.3s ease;
     z-index: 10;
 }
 
+/* Highlight square of the selected piece with a green border */
 .piece.selected::after {
     content: '';
     position: absolute;
@@ -110,7 +67,33 @@
     bottom: -5px;
     border: 2px solid #00ff00;
     border-radius: 5px;
-    pointer-events: none;
+    pointer-events: none;  /* This ensures clicks pass through the border */
 }
 
+/* Positions for chess pieces using sprite sheet */
+.white.king { background-position: -9px 0; }
+.black.king { background-position: -9px -50px; }
 
+.white.queen { background-position: -55px 0; }
+.black.queen { background-position: -55px -50px; }
+
+.white.bishop { background-position: -103px 0; }
+.black.bishop { background-position: -103px -50px; }
+
+.white.knight { background-position: -152px 0; }
+.black.knight { background-position: -152px -50px; }
+
+.white.rook { background-position: -198px 0; }
+.black.rook { background-position: -198px -50px; }
+
+.white.pawn { background-position: -247px 0; }
+.black.pawn { background-position: -247px -50px; }
+
+.highlight {
+    background-color: rgba(255, 255, 0, 0.5); /* Yellow translucent background */
+    border-radius: 50%; /* Make it circular */
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: 1;
+}
