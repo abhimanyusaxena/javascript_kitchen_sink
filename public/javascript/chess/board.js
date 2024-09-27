@@ -1,8 +1,19 @@
+let COLOR = {
+    BLACK: 'black',
+    WHITE: 'white'
+}
+
+let TURN = {
+    BLACK: 'black',
+    WHITE: 'white'
+}
+
 var Board = function(config){
     this.root_id = config.root_id;
     this.$el = document.getElementById(this.root_id);
     this.generateBoardDom();
     this.addListeners();
+    this.turn = TURN.WHITE;
 }
 
 Board.prototype.addListeners = function(){
@@ -57,19 +68,49 @@ Board.prototype.clearSelection = function(){
     });
 };
 
-Board.prototype.boardClicked = function(event){    
-    this.clearSelection();    
+Board.prototype.movePiece = function(clickedCell) {
+    //update position of the selected piece to new position
+    if (this.selectedPiece) {
+        let firstPos = this.selectedPiece.position;
+        this.selectedPiece.moveTo(clickedCell);
+        let movedPos = this.selectedPiece.position;
+
+        if (firstPos == movedPos) {
+            return;
+        }
+        
+        this.selectedPiece = null;
+        this.switchTurns();
+    }
+}
+
+Board.prototype.switchTurns = function() {
+    this.turn = this.turn == TURN.BLACK ? TURN.WHITE : TURN.BLACK;
+}
+
+Board.prototype.boardClicked = function(event){
+    this.clearSelection();
+
     const clickedCell = this.getClickedBlock(event);
-    const selectedPiece = this.getPieceAt(clickedCell)
-    if(selectedPiece){
-        //Add 'selected' class to the clicked piece    
+    const selectedPiece = this.getPieceAt(clickedCell);
+
+    let playerTryingSelect = false;
+
+    if (selectedPiece && selectedPiece.isColor(COLOR.BLACK) && this.turn == TURN.BLACK) {
+        playerTryingSelect = true;
+    }
+
+    if (selectedPiece && selectedPiece.isColor(COLOR.WHITE) && this.turn == TURN.WHITE) {
+        playerTryingSelect = true;
+    }
+    
+    if (playerTryingSelect) {
+        // Add 'selected' class to the clicked piece
         this.selectPiece(event.target, selectedPiece);
-    }else{
-        //update position of the selected piece to new position
-        if(this.selectedPiece){
-            this.selectedPiece.moveTo(clickedCell);        
-        }                
-    }    
+        return;
+    }
+
+    this.movePiece(clickedCell);
 }
 
 Board.prototype.getPieceAt = function(cell){
@@ -133,50 +174,50 @@ Board.prototype.selectPiece = function(clickedElement, selectedPiece) {
 Board.prototype.initiateGame = function() {
     // Create white pieces
     this.whitePieces = {
-        king: new King({ color: 'white', position: 'E1' }),
-        queen: new Queen({ color: 'white', position: 'D1' }),
+        king: new King({ color: COLOR.WHITE, position: 'E1' }),
+        queen: new Queen({ color: COLOR.WHITE, position: 'D1' }),
         bishops: [
-            new Bishop({ color: 'white', position: 'C1' }),
-            new Bishop({ color: 'white', position: 'F1' })
+            new Bishop({ color: COLOR.WHITE, position: 'C1' }),
+            new Bishop({ color: COLOR.WHITE, position: 'F1' })
         ],
         knights: [
-            new Knight({ color: 'white', position: 'B1' }),
-            new Knight({ color: 'white', position: 'G1' })
+            new Knight({ color: COLOR.WHITE, position: 'B1' }),
+            new Knight({ color: COLOR.WHITE, position: 'G1' })
         ],
         rooks: [
-            new Rook({ color: 'white', position: 'A1' }),
-            new Rook({ color: 'white', position: 'H1' })
+            new Rook({ color: COLOR.WHITE, position: 'A1' }),
+            new Rook({ color: COLOR.WHITE, position: 'H1' })
         ],
         pawns: []
     };
 
     // Create white pawns
     for (let i = 0; i < 8; i++) {
-        this.whitePieces.pawns.push(new Pawn({ color: 'white', position: String.fromCharCode(65 + i) + '2' }));
+        this.whitePieces.pawns.push(new Pawn({ color: COLOR.WHITE, position: String.fromCharCode(65 + i) + '2' }));
     }
 
     // Create black pieces
     this.blackPieces = {
-        king: new King({ color: 'black', position: 'E8' }),
-        queen: new Queen({ color: 'black', position: 'D8' }),
+        king: new King({ color: COLOR.BLACK, position: 'E8' }),
+        queen: new Queen({ color: COLOR.BLACK, position: 'D8' }),
         bishops: [
-            new Bishop({ color: 'black', position: 'C8' }),
-            new Bishop({ color: 'black', position: 'F8' })
+            new Bishop({ color: COLOR.BLACK, position: 'C8' }),
+            new Bishop({ color: COLOR.BLACK, position: 'F8' })
         ],
         knights: [
-            new Knight({ color: 'black', position: 'B8' }),
-            new Knight({ color: 'black', position: 'G8' })
+            new Knight({ color: COLOR.BLACK, position: 'B8' }),
+            new Knight({ color: COLOR.BLACK, position: 'G8' })
         ],
         rooks: [
-            new Rook({ color: 'black', position: 'A8' }),
-            new Rook({ color: 'black', position: 'H8' })
+            new Rook({ color: COLOR.BLACK, position: 'A8' }),
+            new Rook({ color: COLOR.BLACK, position: 'H8' })
         ],
         pawns: []
     };
 
     // Create black pawns
     for (let i = 0; i < 8; i++) {
-        this.blackPieces.pawns.push(new Pawn({ color: 'black', position: String.fromCharCode(65 + i) + '7' }));
+        this.blackPieces.pawns.push(new Pawn({ color: COLOR.BLACK, position: String.fromCharCode(65 + i) + '7' }));
     }
 };
 
