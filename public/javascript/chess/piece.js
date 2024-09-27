@@ -45,3 +45,8 @@ Piece.prototype.render = function(){
 Piece.prototype.kill = function(targetPiece){
     console.log("Method not implemeted by: " + typeof(this));
 }
+
+Piece.prototype.isColor = function(checkColor) {
+    return this.color == checkColor;
+}
+
