@@ -72,7 +72,7 @@ Board.prototype.movePiece = function(clickedCell) {
     //update position of the selected piece to new position
     if (this.selectedPiece) {
         let firstPos = this.selectedPiece.position;
-        this.selectedPiece.moveTo(clickedCell);
+        this.selectedPiece.moveTo(clickedCell,this);
         let movedPos = this.selectedPiece.position;
 
         if (firstPos == movedPos) {
