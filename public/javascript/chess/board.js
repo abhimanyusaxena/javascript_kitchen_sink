@@ -81,6 +81,7 @@ Board.prototype.movePiece = function(clickedCell) {
         
         this.selectedPiece = null;
         this.switchTurns();
+        this.clearSelection();
     }
 }
 
@@ -89,8 +90,6 @@ Board.prototype.switchTurns = function() {
 }
 
 Board.prototype.boardClicked = function(event){
-    this.clearSelection();
-
     const clickedCell = this.getClickedBlock(event);
     const selectedPiece = this.getPieceAt(clickedCell);
 
