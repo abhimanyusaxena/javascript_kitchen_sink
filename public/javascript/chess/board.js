@@ -105,6 +105,7 @@ Board.prototype.boardClicked = function(event){
     
     if (playerTryingSelect) {
         // Add 'selected' class to the clicked piece
+        this.clearSelection();
         this.selectPiece(event.target, selectedPiece);
         return;
     }
