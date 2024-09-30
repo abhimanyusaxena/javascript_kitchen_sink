@@ -70,19 +70,26 @@ Board.prototype.clearSelection = function(){
 
 Board.prototype.movePiece = function(clickedCell) {
     //update position of the selected piece to new position
-    if (this.selectedPiece) {
-        let firstPos = this.selectedPiece.position;
-        this.selectedPiece.moveTo(clickedCell,this);
-        let movedPos = this.selectedPiece.position;
-
-        if (firstPos == movedPos) {
-            return;
-        }
-        
-        this.selectedPiece = null;
-        this.switchTurns();
-        this.clearSelection();
+    if (!this.selectedPiece) {
+        return;
     }
+
+    let victimPiece = this.getPieceAt(clickedCell);
+
+    let firstPos = this.selectedPiece.position;
+    this.selectedPiece.moveTo(clickedCell,this);
+    let movedPos = this.selectedPiece.position;
+
+    if (firstPos == movedPos) {
+        return;
+    }
+    
+    victimPiece ? victimPiece.kill() : undefined;
+
+    this.selectedPiece = null;
+    
+    this.switchTurns();
+    this.clearSelection();
 }
 
 Board.prototype.switchTurns = function() {
@@ -101,6 +108,10 @@ Board.prototype.boardClicked = function(event){
 
     if (selectedPiece && selectedPiece.isColor(COLOR.WHITE) && this.turn == TURN.WHITE) {
         playerTryingSelect = true;
+    }
+
+    if (selectedPiece && !selectedPiece.isAlive()) {
+        playerTryingSelect = false;
     }
     
     if (playerTryingSelect) {
