@@ -1,4 +1,4 @@
-var livingStates = {
+var LIVING_STATES = {
     ALIVE: "living",
     DEAD: "dead"
 }
@@ -6,7 +6,7 @@ var livingStates = {
 var Piece = function(config){
     this.position = config.position;
     this.color = config.color;
-    this.livingState = livingStates.ALIVE;
+    this.livingState = LIVING_STATES.ALIVE;
 
     if(this.position){
         this.render();        
@@ -33,7 +33,7 @@ Piece.prototype.clearGhost = function() {
 Piece.prototype.render = function(){
     this.clearGhost();
 
-    if (this.livingState == livingStates.DEAD) {
+    if (this.livingState == LIVING_STATES.DEAD) {
         return;
     }
 
@@ -59,8 +59,15 @@ Piece.prototype.render = function(){
     this.attachListeners();
 }
 
-Piece.prototype.kill = function(targetPiece){
-    console.log("Method not implemeted by: " + typeof(this));
+Piece.prototype.kill = function() {
+    console.log(`The ${this.type} at position ${this.position} was killed`);
+    this.livingState = LIVING_STATES.DEAD;
+    this.position = null;
+    this.render();
+}
+
+Piece.prototype.isAlive = function() {
+    return this.livingState == LIVING_STATES.ALIVE;
 }
 
 Piece.prototype.isColor = function(checkColor) {
