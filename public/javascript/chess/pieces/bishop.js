@@ -5,10 +5,10 @@ var Bishop = function(config){
 
 Bishop.prototype = new Piece({});
 
-Bishop.prototype.moveTo = function(targetPosition){
+Bishop.prototype.moveTo = function(targetPosition, board){
     console.log(`Attempting to move bishop from ${this.position} to ${targetPosition.col}${targetPosition.row}`);
     
-    var isValidMove = this.isValidMove(targetPosition);
+    var isValidMove = this.isValidMove(targetPosition, board);
     if (!isValidMove) {
         console.log("Invalid move for bishop");
         return;
@@ -16,20 +16,20 @@ Bishop.prototype.moveTo = function(targetPosition){
     
     console.log("Move is valid. Proceeding with move.");
     
-    // Check if there's a piece to kill
-    var pieceAtTarget = this.Board.getPieceAt(targetPosition);
-    if (pieceAtTarget) {
-        console.log(`Piece found at target: ${pieceAtTarget.color} ${pieceAtTarget.type}`);
-        if (pieceAtTarget.color !== this.color) {
-            console.log("Attempting to kill piece");
-            this.kill(pieceAtTarget);
-        } else {
-            console.log("Cannot kill own piece. Move aborted.");
-            return;
-        }
-    } else {
-        console.log("No piece at target position.");
-    }
+    // // Check if there's a piece to kill
+    // var pieceAtTarget = board.getPieceAt(targetPosition);
+    // if (pieceAtTarget) {
+    //     console.log(`Piece found at target: ${pieceAtTarget.color} ${pieceAtTarget.type}`);
+    //     if (pieceAtTarget.color !== this.color) {
+    //         console.log("Attempting to kill piece");
+    //         this.kill(pieceAtTarget);
+    //     } else {
+    //         console.log("Cannot kill own piece. Move aborted.");
+    //         return;
+    //     }
+    // } else {
+    //     console.log("No piece at target position.");
+    // }
     
     var newPos = targetPosition.col + targetPosition.row;
     this.position = newPos;
@@ -37,7 +37,7 @@ Bishop.prototype.moveTo = function(targetPosition){
     console.log(`Bishop successfully moved to ${this.position}`);
 }
 
-Bishop.prototype.isValidMove = function(targetPosition) {
+Bishop.prototype.isValidMove = function(targetPosition, board) {
     var currentRow = parseInt(this.position[1], 10);
     var targetRow = parseInt(targetPosition.row, 10);
     var currentCol = this.position[0].toUpperCase();
@@ -62,7 +62,7 @@ Bishop.prototype.isValidMove = function(targetPosition) {
             col: String.fromCharCode(currentCheckCol)
         };
 
-        if (this.Board.getPieceAt(intermediatePosition)) {
+        if (board.getPieceAt(intermediatePosition)) {
             console.log(`Path blocked at ${intermediatePosition.col}${intermediatePosition.row}`);
             return false;
         }
@@ -75,64 +75,3 @@ Bishop.prototype.isValidMove = function(targetPosition) {
     return true;
 };
 
-Bishop.prototype.kill = function(targetPiece) {
-    console.log("Method not implemented by bishop");
-    if (!targetPiece.$el) {
-        console.error("Target piece does not have a DOM element.");
-        return;
-    }
-    if (targetPiece.$el.parentNode) {
-        targetPiece.$el.parentNode.removeChild(targetPiece.$el);
-        console.log("Piece removed from the board.");
-    }
-    else {
-        console.error("Cannot remove piece from board: no parent node.");
-    }
-    var pieceSet = targetPiece.color === 'white' ? this.Board.whitePieces : this.Board.blackPieces;
-    for (var pieceType in pieceSet) {
-        if (Array.isArray(pieceSet[pieceType])) {
-            var initialLength = pieceSet[pieceType].length;
-            pieceSet[pieceType] = pieceSet[pieceType].filter(piece => piece !== targetPiece);
-            if (pieceSet[pieceType].length < initialLength) {
-                console.log(`${targetPiece.type} removed from ${targetPiece.color} pieces array.`);
-            }
-        } else if (pieceSet[pieceType] === targetPiece) {
-            delete pieceSet[pieceType];
-            console.log(`${targetPiece.type} removed from ${targetPiece.color} pieces object.`);
-        }
-    }
-    
-    
-    
-};
-// console.log(`${this.color} bishop attempting to kill ${targetPiece.color} ${targetPiece.type} at ${targetPiece.position}`);
-    
-//     if (!targetPiece.$el) {
-//         console.error("Target piece does not have a DOM element.");
-//         return;
-//     }
-    
-//     // Remove the killed piece from the board
-//     if (targetPiece.$el.parentNode) {
-//         targetPiece.$el.parentNode.removeChild(targetPiece.$el);
-//         console.log("Piece removed from the board.");
-//     } else {
-//         console.error("Cannot remove piece from board: no parent node.");
-//     }
-    
-//     // Remove the killed piece from the game state
-//     var pieceSet = targetPiece.color === 'white' ? this.Board.whitePieces : this.Board.blackPieces;
-//     for (var pieceType in pieceSet) {
-//         if (Array.isArray(pieceSet[pieceType])) {
-//             var initialLength = pieceSet[pieceType].length;
-//             pieceSet[pieceType] = pieceSet[pieceType].filter(piece => piece !== targetPiece);
-//             if (pieceSet[pieceType].length < initialLength) {
-//                 console.log(`${targetPiece.type} removed from ${targetPiece.color} pieces array.`);
-//             }
-//         } else if (pieceSet[pieceType] === targetPiece) {
-//             delete pieceSet[pieceType];
-//             console.log(`${targetPiece.type} removed from ${targetPiece.color} pieces object.`);
-//         }
-//     }
-    
-//     console.log("Kill operation completed.");
