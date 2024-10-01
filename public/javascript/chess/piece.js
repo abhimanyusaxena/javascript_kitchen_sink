@@ -7,6 +7,7 @@ var Piece = function(config){
     this.position = config.position;
     this.color = config.color;
     this.livingState = LIVING_STATES.ALIVE;
+    this.type;
 
     if(this.position){
         this.render();        
@@ -59,11 +60,16 @@ Piece.prototype.render = function(){
     this.attachListeners();
 }
 
-Piece.prototype.kill = function() {
+Piece.prototype.kill = function(endGameCallback) {
     console.log(`The ${this.type} at position ${this.position} was killed`);
+    
     this.livingState = LIVING_STATES.DEAD;
     this.position = null;
     this.render();
+
+    if (this.type == "king") {
+        endGameCallback();
+    }
 }
 
 Piece.prototype.isAlive = function() {

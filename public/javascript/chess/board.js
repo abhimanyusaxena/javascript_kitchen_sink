@@ -8,12 +8,18 @@ let TURN = {
     WHITE: 'white'
 }
 
+let GAME_STATES = {
+    ENDED: 'ended',
+    RUNNING: 'running'
+}
+
 var Board = function(config){
     this.root_id = config.root_id;
     this.$el = document.getElementById(this.root_id);
     this.generateBoardDom();
     this.addListeners();
     this.turn = TURN.WHITE;
+    this.gameState = GAME_STATES.RUNNING;
 }
 
 Board.prototype.addListeners = function(){
@@ -68,6 +74,11 @@ Board.prototype.clearSelection = function(){
     });
 };
 
+Board.prototype.endGame = function() {
+    alert(`Player ${this.turn} has just won the game.`);
+    this.gameState = GAME_STATES.ENDED;
+}
+
 Board.prototype.movePiece = function(clickedCell) {
     //update position of the selected piece to new position
     if (!this.selectedPiece) {
@@ -84,12 +95,13 @@ Board.prototype.movePiece = function(clickedCell) {
         return;
     }
     
-    victimPiece ? victimPiece.kill() : undefined;
-
-    this.selectedPiece = null;
+    if (victimPiece) {
+        victimPiece.kill(this.endGame.bind(this));
+    }
     
-    this.switchTurns();
+    this.selectedPiece = null;
     this.clearSelection();
+    this.switchTurns();
 }
 
 Board.prototype.switchTurns = function() {
@@ -97,6 +109,10 @@ Board.prototype.switchTurns = function() {
 }
 
 Board.prototype.boardClicked = function(event){
+    if (this.gameState != GAME_STATES.RUNNING) {
+        return;
+    }
+
     const clickedCell = this.getClickedBlock(event);
     const selectedPiece = this.getPieceAt(clickedCell);
 
