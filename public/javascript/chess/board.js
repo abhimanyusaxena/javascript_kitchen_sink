@@ -46,13 +46,14 @@ Board.prototype.getClickedBlock = function(clickEvent) {
         console.warn('Clicked element is not within a board square');
     }
 }
-
 Board.prototype.clearSelection = function() {
-    const allPieces = document.querySelectorAll('.piece');
-    allPieces.forEach(piece => {
+    // Deselect all currently selected pieces
+    const selectedPieces = document.querySelectorAll('.selected');
+    selectedPieces.forEach(piece => {
         piece.classList.remove('selected');
     });
-    this.selectedPiece = null; // Reset selectedPiece
+
+    this.selectedPiece = null; // Reset the selected piece
 };
 
 Board.prototype.boardClicked = function(event) {    
@@ -147,6 +148,10 @@ Board.prototype.switchTurn = function() {
 }
 
 Board.prototype.selectPiece = function(clickedElement, selectedPiece) {
+    // First clear any existing selection
+    this.clearSelection();
+
+    // Highlight the new selected piece only
     if (clickedElement.classList.contains('piece')) {
         clickedElement.classList.add('selected');
     } else {
@@ -155,6 +160,7 @@ Board.prototype.selectPiece = function(clickedElement, selectedPiece) {
             parentElement.classList.add('selected');
         }
     }
+
     selectedPiece.selected = true;
     this.selectedPiece = selectedPiece; // Set the selected piece
 }

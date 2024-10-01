@@ -19,10 +19,16 @@ Pawn.prototype.moveTo = function(targetPosition) {
     
     // Check if the move is valid
     if (this.isValidMove(targetPosition)) {
-        // Check if the move is a kill (diagonal capture)
-        if (this.isDiagonalCapture(targetPosition)) {
-            const targetPiece = this.board.getPieceAt(targetPosition);
-            this.kill(targetPiece); // Kill the target piece
+        const targetPiece = this.board.getPieceAt(targetPosition);
+        
+        // Check if it is a capture move
+        if (this.isDiagonalCapture(targetPosition) && targetPiece && targetPiece.color !== this.color) {
+            this.kill(targetPiece); // Capture the target piece
+        } else if (this.isStraightMove(targetPosition) && !targetPiece) {
+            // Normal straight move, no capture
+        } else {
+            console.log("Invalid move: Cannot move there");
+            return;
         }
         
         this.position = targetPosition.col + targetPosition.row;
@@ -33,32 +39,13 @@ Pawn.prototype.moveTo = function(targetPosition) {
     }
 };
 
-// Kill logic
-Pawn.prototype.kill = function(targetPiece) {
-    // Remove the target piece from the board
-    const targetPosition = targetPiece.position;
-    const targetElement = document.querySelector(`[data-col="${targetPosition[0]}"] [data-row="${targetPosition[1]}"]`);
-    targetElement.innerHTML = ''; // Remove the target piece from the board
-
-    // Remove the target piece from the appropriate pieces object
-    if (targetPiece.color === 'white') {
-        const index = this.board.whitePieces.pawns.indexOf(targetPiece);
-        if (index !== -1) {
-            this.board.whitePieces.pawns.splice(index, 1);
-        }
-    } else {
-        const index = this.board.blackPieces.pawns.indexOf(targetPiece);
-        if (index !== -1) {
-            this.board.blackPieces.pawns.splice(index, 1);
-        }
-    }
-
-    console.log("Pawn killed " + targetPiece.type);
-};
-
 // Validate the Pawn's move
 Pawn.prototype.isValidMove = function(targetPosition) {
-    // Convert current position to row and column
+    return this.isStraightMove(targetPosition) || this.isDiagonalCapture(targetPosition);
+};
+
+// Check if the move is a valid straight move (forward)
+Pawn.prototype.isStraightMove = function(targetPosition) {
     let currentCol = this.position.charAt(0);
     let currentRow = parseInt(this.position.charAt(1));
 
@@ -66,23 +53,19 @@ Pawn.prototype.isValidMove = function(targetPosition) {
     let moveDistance = this.color === 'white' ? 1 : -1;
     let initialRow = this.color === 'white' ? 2 : 7;
 
-    // Moving straight
+    // Straight movement (no column change)
     if (targetPosition.col === currentCol) {
+        // Regular one-square move
         if (targetPosition.row === (currentRow + moveDistance).toString()) {
-            return true; // Regular one-square move
-        } else if (currentRow === initialRow && targetPosition.row === (currentRow + 2 * moveDistance).toString()) {
-            return true; // Initial two-square move
+            return true;
+        }
+        // Initial two-square move
+        else if (currentRow === initialRow && targetPosition.row === (currentRow + 2 * moveDistance).toString()) {
+            return true;
         }
     }
 
-    // Diagonal movement is only valid for capturing an opponent's piece
-    if (this.isDiagonalCapture(targetPosition)) {
-        return true; // Diagonal capture
-    }
-
-    // If none of the above conditions are met, the move is invalid
-    console.warn("Invalid move for pawn");
-    return false;
+    return false; // Invalid straight move
 };
 
 // Check if the move is a diagonal capture
@@ -90,9 +73,12 @@ Pawn.prototype.isDiagonalCapture = function(targetPosition) {
     let currentCol = this.position.charAt(0);
     let currentRow = parseInt(this.position.charAt(1));
 
-    return Math.abs(targetPosition.col.charCodeAt(0) - currentCol.charCodeAt(0)) === 1 &&
-           targetPosition.row === (currentRow + (this.color === 'white' ? 1 : -1)).toString();
-};
+    // Check diagonal move
+    if (Math.abs(targetPosition.col.charCodeAt(0) - currentCol.charCodeAt(0)) === 1 &&
+        targetPosition.row === (currentRow + (this.color === 'white' ? 1 : -1)).toString()) {
+        const targetPiece = this.board.getPieceAt(targetPosition);
+        return targetPiece && targetPiece.color !== this.color; // Only capture if there's an opponent's piece
+    }
 
-// Inherit from the Piece class properly
-Pawn.prototype.constructor = Pawn;
+    return false;
+};
