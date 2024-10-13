@@ -6,7 +6,7 @@ var Piece = function(config){
     }    
 }
 Piece.prototype.moveTo = function(targetPosition){
-    console.log("Method not implemeted by: " + this.type);
+    console.log("Method not implemented by: " + this.type);
 }
 
 
